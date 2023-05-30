@@ -1,3 +1,9 @@
+// ste código define un componente RoomMembers que
+// renderiza una lista de miembros de una sala.
+// Utiliza clases CSS para estilizar el contenedor
+// y los elementos dentro de él. Los miembros se
+// muestran como elementos <h1>.
+
 import React from "react"
 
 const RoomMembers = ({ members }: { members: string[] }) => {
