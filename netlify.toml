@@ -1,5 +1,5 @@
 
 [dev]
   command = "cd server && npm install && npm run start"
-  publish = "client/build"
+  publish = "server/build"
   functions = "server/build"
