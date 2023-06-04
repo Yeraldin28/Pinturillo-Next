@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import useDraw from "../../../hooks/useDraw"
 import { CirclePicker } from "react-color"
 import { io } from "socket.io-client"
@@ -23,6 +23,7 @@ interface ParamsProps {
 }
 
 const Room = ({ params }: ParamsProps) => {
+    const { setUser, user } = useContext(UserContext)
     const roomId = params.id
     const [color, setColor] = useState("#000") // Estado para almacenar el color seleccionado
     const [size, setSize] = useState<5 | 7.5 | 10>(5) // Estado para almacenar el tamaño del pincel
@@ -48,6 +49,11 @@ const Room = ({ params }: ParamsProps) => {
 
         socket.emit("join-room", { roomId }) // Se une a la sala especificada mediante el socket
 
+        if (user.leader === user.name) {
+            socket.emit("client-ready-leader", roomId, user.name)
+        } else {
+            socket.emit("client-ready", roomId, user.name)
+        }
         socket.on("get-members", (name: string) => {
             // Recibe los miembros de la sala y los envía al servidor mediante el socket
             socket.emit("receive-members", roomId, membersRef.current, name)
@@ -90,6 +96,7 @@ const Room = ({ params }: ParamsProps) => {
             socket.off("get-members")
             socket.off("update-members")
             socket.off("remove-member")
+            socket.emit("exit", roomId, user.name)
         }
     }, [])
 
@@ -131,7 +138,7 @@ const Room = ({ params }: ParamsProps) => {
                   </h1>
                   <CirclePicker
                     color={color}
-                    onChange={(e) => setColor(e.hex)}
+                    onChange={(e:any) => setColor(e.hex)}
                   />
                 </div>
                 <div>
