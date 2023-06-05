@@ -1,6 +1,5 @@
 "use client"
 
-import "./globals.css"
 import ContextProvider from "../components/ContextProvider"
 
 export default function RootLayout({
@@ -20,7 +19,7 @@ export default function RootLayout({
                     rel="stylesheet"
                 ></link>
             </head>
-            <body>
+            <body style={{ background: 'linear-gradient(to bottom right, #581c87, #1e3a8a)' }}>
                  {/* Envuelve los hijos con el componente ContextProvider */}
                 <ContextProvider>{children}</ContextProvider>
             </body>
